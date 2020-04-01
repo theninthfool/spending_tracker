@@ -14,8 +14,9 @@ export default function Form({ categories }) {
         console.log(`amount = ${amount}`);
         console.log(`type = ${type}`);
 
+        
         let catObj = categories.find(cat => {
-            return (cat.type === type && cat.name === category)
+            return (cat.type === type && cat.name === category.toLowerCase())
         });
         let id = catObj ? catObj.uid: null
 
@@ -45,7 +46,7 @@ export default function Form({ categories }) {
                     if(type === 'income') {
                         //create new income category
                         const newCategory = {
-                            name: category,
+                            name: category.toLowerCase(),
                             total: Number(amount),
                             type: 'income'
                         }
@@ -54,7 +55,7 @@ export default function Form({ categories }) {
                     } else {
                         //create new expense category
                         const newCategory = {
-                            name: category,
+                            name: category.toLowerCase(),
                             total: Number(amount),
                             type: 'expenses',
                             budget: 0
@@ -81,7 +82,7 @@ export default function Form({ categories }) {
 
                 //add transaction
                 const newTransaction = {
-                    category,
+                    category: category.toLowerCase(),
                     type,
                     note,
                     total: Number(amount),
@@ -98,7 +99,7 @@ export default function Form({ categories }) {
         });
 
 
-        setType('expenses')
+        setType('income')
         setCategory('');
         setAmount('');
         setNote('')
@@ -111,8 +112,8 @@ export default function Form({ categories }) {
                     name='typeValue'
                     value={type} 
                     onChange={e => setType(e.target.value)}>
-                    <option value="expenses">Expense</option>
                     <option value="income">Income</option>
+                    <option value="expenses">Expense</option>
                 </select>
             </label>
             <label>
