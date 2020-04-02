@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import db from './Firestore';
+import '../css/form.css'
 
 export default function Form({ categories }) {
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
     const [note, setNote] = useState('');
     const [type, setType] = useState('expenses');
+
+    
+    const color = type === 'income' ? 'rgba(0,255,0,.5)' : 'rgba(255,0,0,.5)'
 
 
     const handleSubmit = (e) => {
@@ -105,39 +109,40 @@ export default function Form({ categories }) {
         setNote('')
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <label className='formItems'>
-                Type:
-                <select 
-                    name='typeValue'
-                    value={type} 
-                    onChange={e => setType(e.target.value)}>
-                    <option value="income">Income</option>
-                    <option value="expenses">Expense</option>
-                </select>
-            </label>
-            <label>
-                Category:
-                <input 
-                    type="text" 
-                    value={category}
-                    onChange={e => setCategory(e.target.value)}  />
-            </label>
-            <label>
-                Amount:
-                <input 
-                    type="text" 
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)} />
-            </label>
-            <label>
-                Note:
-                <input 
-                    type="text" 
-                    value={note}
-                    onChange={e => setNote(e.target.value)} />
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
+       <div className='formContainer'> 
+            <div className='tabs'>
+                <div onClick={() => setType('income')} style={{background: 'rgba(0,255,0,.5'}}>
+                    Income
+                </div>
+                <div onClick={() => setType('expenses')} style={{background: 'rgba(255,0,0,.5'}}>
+                    Expenses
+                </div>
+            </div>
+            <form onSubmit={handleSubmit}
+                    style={{background: `${color}`}}>
+                <label className='formItems'>
+                    <p>Category:</p>
+                    <input 
+                        type="text" 
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}  />
+                </label>
+                <label className='formItems'>
+                    <p>Amount:</p>
+                    <input 
+                        type="text" 
+                        value={amount}
+                        onChange={e => setAmount(e.target.value)} />
+                </label>
+                <label className='formItems'>
+                    <p>Note:</p>
+                    <input 
+                        type="textarea" 
+                        value={note}
+                        onChange={e => setNote(e.target.value)} />
+                </label>
+                <input type="submit" value={`submit to ${type}`} />
+            </form>
+       </div>
     )
 }

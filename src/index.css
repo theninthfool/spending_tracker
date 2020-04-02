@@ -9,8 +9,32 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.formContainer {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+}
+
+.tabs {
+    display: flex;
+    text-align: center;
+}
+
+.tabs>* {
+    flex: 1;
+    padding: 10px;
+}
+
 form {
     display: flex;
     flex-direction: column;
-    margin-top: 25px;
+    align-items: center;
+}
+
+.formItems {
+    margin: 5px;
+}
+
+.formItems p {
+    margin: 0;
 }

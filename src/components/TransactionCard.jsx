@@ -53,6 +53,7 @@ export default function TransactionCard({ transaction, categoryUID }) {
             <p>Type: {transaction.type}</p>
             <p>Category: {transaction.category}</p>
             <p>Total: {transaction.total}</p>
+            <p>Note: {transaction.note}</p>
             <button onClick={handleSubmit}>Delete</button>
         </div>
     )
