@@ -1,6 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
 import db from './Firestore';
-import '../css/form.css'
+import '../css/form.css';
+
+function newCategory(name, type, total) {
+    const obj = type === 'income' ? (
+        {name, type, total}
+    ) : (
+        {name, type, total, budget: 0}
+    );
+    return obj
+}
+
+function newTransaction(category, type, total, note) {
+    return {category, type, total, note, date: new Date()}
+}
 
 export default function Form({ categories }) {
     const [category, setCategory] = useState('');
@@ -14,15 +27,13 @@ export default function Form({ categories }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(`Category = ${category}`);
-        console.log(`amount = ${amount}`);
-        console.log(`type = ${type}`);
+        const total = Number(amount);
+        const categoryLC = category.toLowerCase()
 
-        
-        let catObj = categories.find(cat => {
-            return (cat.type === type && cat.name === category.toLowerCase())
+        const catObj = categories.find(cat => {
+            return (cat.type === type && cat.name === categoryLC)
         });
-        let id = catObj ? catObj.uid: null
+        const id = catObj ? catObj.uid: null
 
            
         const totalsRef = db.doc('totals/totals');
@@ -40,60 +51,22 @@ export default function Form({ categories }) {
                 const totalsData = values[1].data();
                 if(categoryData) {
                     // add amount to category total
-                    // console.log('old category ', categoryData)
-                    const newTotal = categoryData.total + Number(amount);
-                    // console.log('new category total ', newTotal)
+                    const newTotal = categoryData.total + total;
                     transaction.update(catDocRef, { total: newTotal});
                 } else {
-                    const newCatRef = db.collection(`categories`).doc();
                     //make new category
-                    if(type === 'income') {
-                        //create new income category
-                        const newCategory = {
-                            name: category.toLowerCase(),
-                            total: Number(amount),
-                            type: 'income'
-                        }
-                        console.log('new category = ', newCategory);
-                        transaction.set(newCatRef, newCategory);
-                    } else {
-                        //create new expense category
-                        const newCategory = {
-                            name: category.toLowerCase(),
-                            total: Number(amount),
-                            type: 'expenses',
-                            budget: 0
-                        }
-                        // console.log('new category = ', newCategory);
-                        transaction.set(newCatRef, newCategory);
+                    const newCatRef = db.collection(`categories`).doc();
+                    const newCat = newCategory(categoryLC, type, total);
+                    transaction.set(newCatRef, newCat)
+                }
 
-                    }
-                }
-                
-                if (type === 'income'){
-                    // add amount to total earned
-                    // console.log('old totals ', totalsData);
-                    const newTotal = totalsData.income + Number(amount);
-                    // console.log('new total income', newTotal);
-                    transaction.update(totalsRef, {income: newTotal});
-                } else {
-                    // add amount to total spent
-                    // console.log('old totals ', totalsData);
-                    const newTotal = totalsData.expenses + Number(amount);
-                    // console.log('new total expenses', newTotal);
-                    transaction.update(totalsRef, {expenses: newTotal});
-                }
+                //add amount to totals
+                const newTotal = totalsData[type] + total;
+                transaction.update(totalsRef, {[type]: newTotal});
 
                 //add transaction
-                const newTransaction = {
-                    category: category.toLowerCase(),
-                    type,
-                    note,
-                    total: Number(amount),
-                    date: new Date()
-                }
-                // console.log('transaction = ', newTransaction);
-                transaction.set(newTransRef, newTransaction);
+                const newTrans = newTransaction(categoryLC, type, total, note);
+                transaction.set(newTransRef, newTrans);
             })
                     
         }).then(() => {
