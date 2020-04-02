@@ -103,7 +103,7 @@ export default function Form({ categories }) {
         });
 
 
-        setType('income')
+        setType('expenses')
         setCategory('');
         setAmount('');
         setNote('')
