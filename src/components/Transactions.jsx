@@ -15,11 +15,13 @@ export default function Transactions({ categories, transactions, transMounted, s
                 const category = categories.find(cat => {
                     return (cat.name === transaction.category && cat.type === transaction.type)
                 });
+                // console.log(category)
                 return (
                     <TransactionCard 
                         key={transaction.uid} 
                         transaction={transaction}
-                        categoryUID={category.uid} />
+                        categoryUID={category.uid} 
+                        />
                 ) 
             })}
         </div>

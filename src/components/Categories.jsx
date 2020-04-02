@@ -9,7 +9,7 @@ export default function Categories({ categories }) {
     return (
         <div>
             {categories.map(cat => {
-                return <CategoryCard category={cat} />
+                return <CategoryCard key={cat.uid} category={cat} />
             })}
         </div>
     )
