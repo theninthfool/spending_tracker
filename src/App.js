@@ -3,9 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar'
 import Home from './components/Home';
 import Form from './components/Form'
-import Income from './components/Income'
 import Transactions from './components/Transactions';
-// import Expenses from './components/Expenses'
+import Categories from './components/Categories';
 import db from './components/Firestore';
 
 function App() {
@@ -97,7 +96,12 @@ function App() {
                             transMounted={transMounted} />
                     <Switch>
                         <Route path="/income">
-                          <Income categories={categories} />
+                          <Categories categories={categories}
+                                      type={'income'} />
+                        </Route>
+                        <Route path="/expenses">
+                          <Categories categories={categories}
+                                      type={'expenses'} />
                         </Route>
                         <Route path="/transactions">
                           <Transactions transactions={transactions}
@@ -108,11 +112,6 @@ function App() {
                         <Route exact path="/">
                            <Home totals={totals} />  
                         </Route>
-
-                        {/* <Route path="/expenses">
-                            <Expenses categories={expensesCats}
-                                  transactions={expensesTrans} />
-                        </Route> */}
                     </Switch>
                     <Form setTotals={setTotals}
                           categories={categories} />

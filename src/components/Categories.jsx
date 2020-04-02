@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CategoryCard from './CategoryCard';
 
-export default function Categories({ categories }) {
+export default function Categories({ categories, type }) {
+    const categoriesByType = categories.filter(cat => cat.type === type);
 
-    useEffect(() => {
-
-    })
     return (
         <div>
-            {categories.map(cat => {
-                return <CategoryCard key={cat.uid} category={cat} />
+            <h1>{type}</h1>
+            {categoriesByType.map(cat => {
+                return <CategoryCard 
+                            key={cat.uid} 
+                            category={cat}
+                            type={type} />
             })}
         </div>
     )
