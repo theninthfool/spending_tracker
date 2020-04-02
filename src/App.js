@@ -29,24 +29,17 @@ function App() {
             
             snap.docChanges().forEach(change => {
               if(change.type === 'added') {
-                
-                let cat = change.doc.data();
-                cat.uid = change.doc.id;
-                // console.log(cat)
-                // console.log(change.doc.data());
+                let cat = {...change.doc.data(), uid: change.doc.id}
                 setCategories(prev => [...prev, cat]);
               }
               if (change.type === 'modified') {
-                console.log(change.doc.id);
                 const updateCategory = (categories) => {
-                  let newArr = categories.map(item => {
-                    if(item.uid === change.doc.id) {
-                      //try object spread syntax
-                      let newItem = change.doc.data();
-                      newItem.uid = change.doc.id;
-                      return newItem
+                  let newArr = categories.map(cat => {
+                    if(cat.uid === change.doc.id) {
+                      // console.log(change.doc.data());
+                      return { ...change.doc.data(), uid: change.doc.id }
                     } else {
-                      return item
+                      return cat
                     }
                   });
                   return newArr;
@@ -69,12 +62,23 @@ function App() {
     if (transMounted) {
       var unsubcribe = db.collection('transactions')
           .onSnapshot(function(snap) {
-            // console.log("Current data: ", snap.docChanges());
-            
             snap.docChanges().forEach(change => {
               if(change.type === 'added') {
+                const newTransaction = {...change.doc.data(), uid: change.doc.id}
                 // console.log(change.doc.data());
-                setTransactions(prev => [...prev, change.doc.data()]);
+                setTransactions(prev => [...prev, newTransaction]);
+              }
+              if (change.type === 'removed') {
+                // console.log(change.doc.data())
+                const id = change.doc.id
+                const deleteTransaction = (transactions, id) => {
+                  const newTransactions = transactions.filter(transaction => {
+                    return transaction.uid !== id
+                  });
+                  return newTransactions
+                }
+                
+                setTransactions(prev => deleteTransaction(prev, id));
               }
             })
     })
@@ -92,16 +96,14 @@ function App() {
                     <Navbar setTransMounted={setTransMounted}
                             transMounted={transMounted} />
                     <Switch>
-                        {/* <Route path={`/income/:category`}>
-                          <Transactions transactions={transactions} />
-                        </Route> */}
                         <Route path="/income">
                           <Income categories={categories} />
                         </Route>
-                        <Route exact path="/transactions">
+                        <Route path="/transactions">
                           <Transactions transactions={transactions}
                                         setTransMounted={setTransMounted}
-                                        transMounted={transMounted} /> 
+                                        transMounted={transMounted}
+                                        categories={categories} /> 
                         </Route>
                         <Route exact path="/">
                            <Home totals={totals} />  

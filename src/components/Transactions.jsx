@@ -2,24 +2,25 @@ import React, { useEffect } from 'react';
 // import {  useParams } from 'react-router-dom';
 import TransactionCard from './TransactionCard';
 
-export default function Transactions({ transactions, transMounted, setTransMounted }) {
-    // const { category } = useParams();
-    // const [catTrans, setCatTrans] = useState([]);
-    // useEffect(() => {
-    //     const catTrans = transactions.filter(trans => {
-    //         return (trans.type === 'income' && trans.category === category)
-    //     });
-    //     setCatTrans(catTrans)
-    // }, [transactions, category]);
+export default function Transactions({ categories, transactions, transMounted, setTransMounted }) {
 
     useEffect(() => {
         if(!transMounted) setTransMounted(true)
-    });
+    }, [transMounted, setTransMounted]);
+
     
     return (
         <div>
             {transactions.map(transaction => {
-                return <TransactionCard transaction={transaction} />
+                const category = categories.find(cat => {
+                    return (cat.name === transaction.category && cat.type === transaction.type)
+                });
+                return (
+                    <TransactionCard 
+                        key={transaction.uid} 
+                        transaction={transaction}
+                        categoryUID={category.uid} />
+                ) 
             })}
         </div>
     )
