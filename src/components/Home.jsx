@@ -15,7 +15,7 @@ export default function Home({ totals }) {
     }
 
     return (
-        <div style={style}>
+        <div className='totals' style={style}>
             <ProgressChart budget={totals.budget} expenses={totals.expenses} />
             <p>Spent: ${totals.expenses}</p>
             <p>Earned: ${totals.income}</p>

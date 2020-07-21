@@ -10,7 +10,7 @@ export default function Transactions({ categories, transactions, transMounted, s
 
     
     return (
-        <div>
+        <div className='transactions'>
             {transactions.map(transaction => {
                 const category = categories.find(cat => {
                     return (cat.name === transaction.category && cat.type === transaction.type)

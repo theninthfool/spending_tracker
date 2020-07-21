@@ -6,9 +6,8 @@ export default function Categories({ categories, type }) {
     const categoriesByType = categories.filter(cat => cat.type === type);
 
     return (
-        <div>
-            <h1>{type}</h1>
-            <PieChart categories={categoriesByType} />
+        <div className={type}>
+            <PieChart categories={categoriesByType} type={type} />
             {categoriesByType.map(cat => {
                 return <CategoryCard 
                             key={cat.uid} 

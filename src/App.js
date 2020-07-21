@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Navbar from './components/Navbar'
+// import { BrowserRouter, Switch, Route } from 'react-router-dom';
+// import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Form from './components/Form'
+import Form from './components/Form';
 import Transactions from './components/Transactions';
 import Categories from './components/Categories';
+// import PieChart from './components/PieChart';
+// import ProgressChart from './components/ProgressChart';
 import db from './components/Firestore';
 
 function App() {
@@ -90,33 +92,45 @@ function App() {
   
   return (
 
-    <BrowserRouter>
-                <div className="App">
-                    <Navbar setTransMounted={setTransMounted}
-                            transMounted={transMounted} />
-                    <Switch>
-                        <Route path="/income">
-                          <Categories categories={categories}
-                                      type={'income'} />
-                        </Route>
-                        <Route path="/expenses">
-                          <Categories categories={categories}
-                                      type={'expenses'} />
-                        </Route>
-                        <Route path="/transactions">
-                          <Transactions transactions={transactions}
-                                        setTransMounted={setTransMounted}
-                                        transMounted={transMounted}
-                                        categories={categories} /> 
-                        </Route>
-                        <Route exact path="/">
-                           <Home totals={totals} />  
-                        </Route>
-                    </Switch>
-                    <Form setTotals={setTotals}
-                          categories={categories} />
-                </div>
-            </BrowserRouter>
+  <div className='page'>
+    <Home totals={totals} /> 
+    <Categories categories={categories} type={'income'} />
+    <Categories categories={categories} type={'expenses'} />
+    <Transactions transactions={transactions}
+                  setTransMounted={setTransMounted}
+                  transMounted={transMounted}
+                  categories={categories} /> 
+    <Form setTotals={setTotals} categories={categories} />
+  </div>
+
+            // <BrowserRouter>
+
+            //     <div className="App">
+            //         <Navbar setTransMounted={setTransMounted}
+            //                 transMounted={transMounted} />
+            //         <Switch>
+            //             <Route path="/income">
+            //               <Categories categories={categories}
+            //                           type={'income'} />
+            //             </Route>
+            //             <Route path="/expenses">
+            //               <Categories categories={categories}
+            //                           type={'expenses'} />
+            //             </Route>
+            //             <Route path="/transactions">
+            //               <Transactions transactions={transactions}
+            //                             setTransMounted={setTransMounted}
+            //                             transMounted={transMounted}
+            //                             categories={categories} /> 
+            //             </Route>
+            //             <Route exact path="/">
+            //                <Home totals={totals} />  
+            //             </Route>
+            //         </Switch>
+            //         <Form setTotals={setTotals}
+            //               categories={categories} />
+            //     </div>
+            // </BrowserRouter>
   
   );
 }

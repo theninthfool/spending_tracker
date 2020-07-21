@@ -4,10 +4,8 @@ import db from './Firestore';
 export default function TransactionCard({ transaction, categoryUID }) {
     const color = transaction.type === 'income' ? 'green' : 'red';
     const style = {
-        border: `2px solid ${color}`,
+        background: `${color}`,
         margin: '5px',
-        paddingBottom: '10px',
-        textAlign: 'center'
     }
 
     const handleSubmit = () => {
@@ -45,11 +43,9 @@ export default function TransactionCard({ transaction, categoryUID }) {
 
 
     return (
-        <div style={style}>
-            <p>Type: {transaction.type}</p>
-            <p>Category: {transaction.category}</p>
-            <p>Total: {transaction.total}</p>
-            <p>Note: {transaction.note}</p>
+        <div className='transaction' style={style}>
+            <p>{`${transaction.category.toUpperCase()}:  $${transaction.total}`}</p>
+            {/* <p>Note: {transaction.note}</p> */}
             <button onClick={handleSubmit}>Delete</button>
         </div>
     )

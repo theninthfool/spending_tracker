@@ -9,10 +9,47 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.page {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "totals totals trans trans" "inc exp trans trans" "inc exp form form";
+    height: 100vh;
+}
+
 .formContainer {
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
+    grid-area: form;
+}
+
+.totals {
+    grid-area: totals;
+}
+
+.transactions {
+    grid-area: trans;
+    overflow: scroll;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.transaction button {
+    background: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.income {
+    grid-area: inc;
+    overflow: scroll;
+}
+
+.expenses {
+    grid-area: exp;
+    overflow: scroll;
 }
 
 .tabs {

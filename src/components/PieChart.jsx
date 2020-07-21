@@ -11,9 +11,9 @@ export default function PieChart({ categories, type }) {
         return {"label": item.name, "value": item.total}
       });
     const chartConfigs = {
-        type: "pie3d",
+        type: "pie2d",
         width: "100%",
-        height: "100%",
+        height: "300",
         dataFormat: "json",
         dataSource: {
             chart: {

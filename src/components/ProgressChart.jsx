@@ -44,7 +44,7 @@ export default function PieChart({ budget, expenses }) {
     
     const chartConfigs = {
       type: 'hlineargauge',
-      width: 600,
+      width: '100%',
       height: 120,
       dataFormat: 'json',
       dataSource: dataSource
